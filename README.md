@@ -1,4 +1,4 @@
-# ⚡ Early-Stage Fault Detection in Francis Turbines using AI/ML
+# Early-Stage Fault Detection in Francis Turbines using AI/ML
 
 [![Python Version](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.12+-FF6F00?style=flat&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
@@ -12,7 +12,7 @@ Paper Reference: [EARLY-STAGE FAULT DETECTION IN FRANCIS TURBINES USING AI-ML](h
 
 ---
 
-## 📌 Executive Summary
+## Executive Summary
 
 Francis hydro turbines operating under off-design regimes (e.g., Part Load, High Load) experience intense hydraulic instability, pressure pulsations, and acoustic resonance. Over long duty cycles, these cyclic mechanical stresses lead to fatigue cracks near the runner blade trailing edges. If undetected, crack propagation culminates in blade fragment detachment and catastrophic structural failure.
 
@@ -20,7 +20,7 @@ This repository implements a **fact-grounded, end-to-end Machine Learning pipeli
 
 ---
 
-## 🏗️ End-to-End System Architecture
+## End-to-End System Architecture
 
 ```mermaid
 graph TD;
@@ -67,9 +67,9 @@ graph TD;
 
 ---
 
-## 📊 Sensor Channels & Fault Stage Mapping
+## Sensor Channels & Fault Stage Mapping
 
-### 📡 Monitored Sensor Channels
+### Monitored Sensor Channels
 | Sensor Code | Description | Physical Metric |
 | :--- | :--- | :--- |
 | `PDT1` | Pressure Transducer Downstream 1 | Hydraulic Pressure Pulsation ($kPa$) |
@@ -78,7 +78,7 @@ graph TD;
 | `ATB1` | Axial Turbine Bearing Sensor 1 | Mechanical Vibration ($m/s^2$) |
 | `ATB2` | Axial Turbine Bearing Sensor 2 | Bearing Axial Displacement ($mm$) |
 
-### 🔍 Progressive Fault Stages (0 - 9)
+### Progressive Fault Stages (0 - 9)
 | Stage | Condition Status | Approx. Crack Length | Mechanical Severity & Operational Impact |
 | :---: | :--- | :---: | :--- |
 | **Stage 0** | Healthy Baseline | $0\text{ mm}$ | Normal operation within nominal parameters. |
@@ -94,7 +94,7 @@ graph TD;
 
 ---
 
-## 📈 Model Benchmark & Comparison
+## Model Benchmark & Comparison
 
 Experiments conducted across multiple machine learning architectures demonstrate that combining spatial feature extraction (1D CNN) with temporal sequence learning (LSTM) achieves superior multi-class fault classification performance.
 
@@ -108,7 +108,7 @@ Experiments conducted across multiple machine learning architectures demonstrate
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 .
@@ -154,7 +154,7 @@ Experiments conducted across multiple machine learning architectures demonstrate
 
 ---
 
-## 🚀 Quick Start & Installation
+## Quick Start & Installation
 
 ### 1. Clone the Repository
 ```bash
@@ -192,17 +192,17 @@ streamlit run app.py
 
 ---
 
-## 💡 Web Application Features
+## Web Application Features
 
-1. **🎯 Live Interactive Sensor Inputs & Presets**: Select from pre-configured turbine operational states (Healthy, Stage 1, Stage 4, Stage 8) or manually input 5 sensor readings.
-2. **📁 Batch CSV Sequence Ingestion**: Upload time-series CSV sensor recordings to analyze fault progression across windowed time sequences.
-3. **📊 Probability Distribution Visualizations**: View stage probability breakdown and prediction confidence metrics.
-4. **📷 Blade Surface Reference Cropping**: Automatic dynamic cropping of the runner blade surface slice corresponding to predicted fault severity.
-5. **🧠 Groq LLaMA-3 AI Expert Advisory**: Receive maintenance action directives, estimated crack growth, and risk assessments formatted in clean JSON.
+1. **Live Interactive Sensor Inputs & Presets**: Select from pre-configured turbine operational states (Healthy, Stage 1, Stage 4, Stage 8) or manually input 5 sensor readings.
+2. **Batch CSV Sequence Ingestion**: Upload time-series CSV sensor recordings to analyze fault progression across windowed time sequences.
+3. **Probability Distribution Visualizations**: View stage probability breakdown and prediction confidence metrics.
+4. **Blade Surface Reference Cropping**: Automatic dynamic cropping of the runner blade surface slice corresponding to predicted fault severity.
+5. **Groq LLaMA-3 AI Expert Advisory**: Receive maintenance action directives, estimated crack growth, and risk assessments formatted in clean JSON.
 
 ---
 
-## 🧪 Running Automated Unit Tests
+## Running Automated Unit Tests
 
 Run the test suite to verify pipeline functionality:
 ```bash
@@ -211,14 +211,15 @@ python -m unittest discover -s tests
 
 ---
 
-## 🤝 Citation & Acknowledgments
+## Citation & Acknowledgments
 
 If you find this research work or implementation useful, please cite:
-- **Paper Link**: [Early-Stage Fault Detection in Francis Turbines Using AI-ML](https://www.pravakarbogati.com.np/assets/papers/EARLY-STAGE%20FAULT%20DETECTION%20IN%20FRANCIS%20TURBINES%20USING%20AI-ML.pdf)
+- **Paper Title**: *Early-Stage Fault Detection in Francis Turbines Using AI-ML*
+- **Paper Link**: [Francis Turbine AI-ML Fault Detection PDF](https://www.pravakarbogati.com.np/assets/papers/EARLY-STAGE%20FAULT%20DETECTION%20IN%20FRANCIS%20TURBINES%20USING%20AI-ML.pdf)
 - **Dataset Source**: Francis-99 Benchmark Data, Norwegian University of Science and Technology (NTNU).
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
