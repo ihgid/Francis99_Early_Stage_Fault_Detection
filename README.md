@@ -109,13 +109,19 @@ Experiments conducted across multiple machine learning architectures demonstrate
 ```
 .
 ├── app.py                     # Streamlit Interactive Web Application
-├── cnn+LSTM_fault_model.h5   # Trained Hybrid CNN-LSTM Model Artifact
-├── robust_scaler.pkl         # Fitted RobustScaler Normalization Parameters
-├── crackimage.jpg            # Visual Reference Grid (5x2 Matrix of Fault Stages)
 ├── requirements.txt          # Verified Project Dependencies
+├── runtime.txt               # Streamlit / Python Runtime Version
 ├── README.md                 # Project Documentation
+├── LICENSE                   # MIT License
 ├── .env.example              # Template for API Key Configurations
 ├── .gitignore                # Git Exclusions File
+├── assets/                   # Application Visual Assets
+│   └── crackimage.jpg        # Visual Reference Grid (5x2 Matrix of Fault Stages)
+├── models/                   # Trained Machine Learning Model & Scaler Artifacts
+│   ├── cnn+LSTM_fault_model.h5 # Trained Hybrid CNN-LSTM Keras Model
+│   └── robust_scaler.pkl     # Fitted RobustScaler Normalization Parameters
+├── data/                     # Raw & Sample Datasets
+│   └── Dataset.ods           # Reference tabular dataset
 ├── src/                      # Modular Python Engine
 │   ├── __init__.py
 │   ├── preprocess.py         # Scaling & Sequence Sliding Window Logic

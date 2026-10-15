@@ -1,13 +1,16 @@
+import os
 import numpy as np
 import pandas as pd
 from joblib import load
 
 SENSOR_COLUMNS = ['PDT1', 'PGV2', 'PDT3', 'ATB1', 'ATB2']
 
-def load_scaler(scaler_path="robust_scaler.pkl"):
+def load_scaler(scaler_path="models/robust_scaler.pkl"):
     """
     Load pre-fitted RobustScaler.
     """
+    if not os.path.exists(scaler_path) and os.path.exists("robust_scaler.pkl"):
+        scaler_path = "robust_scaler.pkl"
     return load(scaler_path)
 
 def preprocess_single_reading(sensor_values, scaler, sequence_length=30):

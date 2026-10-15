@@ -66,8 +66,10 @@ st.markdown("""
 # --- Load Model & Scaler ---
 @st.cache_resource
 def load_resources():
-    model = load_model("cnn+LSTM_fault_model.h5")
-    scaler = load_scaler("robust_scaler.pkl")
+    model_path = "models/cnn+LSTM_fault_model.h5" if os.path.exists("models/cnn+LSTM_fault_model.h5") else "cnn+LSTM_fault_model.h5"
+    scaler_path = "models/robust_scaler.pkl" if os.path.exists("models/robust_scaler.pkl") else "robust_scaler.pkl"
+    model = load_model(model_path)
+    scaler = load_scaler(scaler_path)
     return model, scaler
 
 try:
@@ -148,7 +150,8 @@ with tab1:
                 st.bar_chart(prob_df, x="Stage", y="Probability", color="#1f77b4")
 
                 # Visual Blade Crack Slice Image
-                cropped_slice = get_cropped_crack_stage_image("crackimage.jpg", fault_stage)
+                img_asset_path = "assets/crackimage.jpg" if os.path.exists("assets/crackimage.jpg") else "crackimage.jpg"
+                cropped_slice = get_cropped_crack_stage_image(img_asset_path, fault_stage)
                 if cropped_slice is not None:
                     st.subheader("📷 Crack Severity Visual Reference")
                     st.image(cropped_slice, caption=f"Francis Turbine Blade Surface - Predicted Stage {fault_stage}", use_column_width=True)

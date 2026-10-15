@@ -34,10 +34,13 @@ def plot_psd_spectrum(signal, sampling_rate=5120, sensor_name="PGV2", title=None
     fig.tight_layout()
     return fig
 
-def get_cropped_crack_stage_image(image_path="crackimage.jpg", fault_stage=0):
+def get_cropped_crack_stage_image(image_path="assets/crackimage.jpg", fault_stage=0):
     """
     Crop and return the runner blade image slice corresponding to fault stage (0 to 9).
     """
+    if not os.path.exists(image_path) and os.path.exists("crackimage.jpg"):
+        image_path = "crackimage.jpg"
+
     if not os.path.exists(image_path):
         return None
 

@@ -33,7 +33,8 @@ def train_pipeline(data_path=None, epochs=20, batch_size=64, save_dir="."):
     # Fit RobustScaler
     scaler = RobustScaler()
     X_scaled = scaler.fit_transform(X_raw)
-    scaler_path = os.path.join(save_dir, "robust_scaler.pkl")
+    os.makedirs(os.path.join(save_dir, "models"), exist_ok=True)
+    scaler_path = os.path.join(save_dir, "models", "robust_scaler.pkl")
     dump(scaler, scaler_path)
     print(f"✅ Scaler saved to {scaler_path}")
 
@@ -57,7 +58,7 @@ def train_pipeline(data_path=None, epochs=20, batch_size=64, save_dir="."):
         verbose=1
     )
 
-    model_path = os.path.join(save_dir, "cnn+LSTM_fault_model.h5")
+    model_path = os.path.join(save_dir, "models", "cnn+LSTM_fault_model.h5")
     model.save(model_path)
     print(f"✅ Trained model saved to {model_path}")
 
