@@ -12,6 +12,11 @@ from joblib import load
 from src.preprocess import load_scaler, preprocess_single_reading, SENSOR_COLUMNS
 from src.model_pipeline import predict_fault_stage
 from src.llm_expert import get_expert_interpretation
+from src.visualization import (
+    plot_time_domain_signal,
+    plot_psd_spectrum,
+    get_cropped_crack_stage_image
+)
 
 # --- Load Environment Variables ---
 load_dotenv()
@@ -76,21 +81,24 @@ st.markdown("<div class='main-header'>⚡ Francis-99 Hydro Turbine AI Fault Dete
 st.markdown("<div class='sub-header'>Real-time early stage runner blade fault diagnosis using hybrid 1D CNN-LSTM Deep Learning & LLaMA 3 Expert AI</div>", unsafe_allow_html=True)
 
 # --- Navigation Tabs ---
-tab1, tab2, tab3 = st.tabs(["🎯 Live Sensor Diagnosis", "📁 Batch CSV Ingestion", "📖 Benchmark & Architecture"])
+tab1, tab2, tab3, tab4 = st.tabs([
+    "🎯 Live Sensor Diagnosis",
+    "📈 Signal Spectrum Analysis",
+    "📁 Batch CSV Ingestion",
+    "📖 Benchmark & Architecture"
+])
 
 # --- TAB 1: Live Diagnosis ---
 with tab1:
     st.subheader("📡 Real-Time Sensor Input")
     st.write("Select a pre-filled sample preset or enter 5 sensor readings below:")
 
-    # Preset Sample Buttons
     preset = st.radio(
         "Load Preset Sample:",
         ["Custom Input", "Healthy Baseline (Stage 0)", "Initial Crack (Stage 1)", "Moderate Crack (Stage 4)", "Critical Detachment (Stage 8)"],
         horizontal=True
     )
 
-    # Preset Values Mapping
     preset_values = {
         "Custom Input": [0.0, 0.0, 0.0, 0.0, 0.0],
         "Healthy Baseline (Stage 0)": [0.0012, -0.0045, 0.0021, 0.0150, -0.0120],
@@ -116,13 +124,12 @@ with tab1:
 
         submit_btn = st.form_submit_button("🔍 Run Fault Diagnosis", type="primary")
 
-    if submit_btn:
+    if submit_btn or preset != "Custom Input":
         sensor_inputs = [pdt1, pgv2, pdt3, atb1, atb2]
         if all(v == 0.0 for v in sensor_inputs):
             st.warning("⚠️ Please provide non-zero sensor readings or choose a preset sample above.")
         else:
             with st.spinner("Processing sensor inputs through CNN-LSTM network..."):
-                # Preprocess & Predict
                 seq_input = preprocess_single_reading(sensor_inputs, scaler, sequence_length=30)
                 fault_stage, confidence, probabilities = predict_fault_stage(model, seq_input)
 
@@ -133,7 +140,6 @@ with tab1:
                 st.markdown(f"<div class='stage-box'>Predicted Fault Condition: Stage {fault_stage} (Confidence: {confidence*100:.1f}%)</div>", unsafe_allow_html=True)
                 st.write("")
 
-                # Stage Probability Chart
                 st.subheader("📊 Class Probability Distribution")
                 prob_df = pd.DataFrame({
                     "Stage": [f"Stage {i}" for i in range(len(probabilities))],
@@ -141,21 +147,11 @@ with tab1:
                 })
                 st.bar_chart(prob_df, x="Stage", y="Probability", color="#1f77b4")
 
-                # Visual Slice Crop
-                image_path = "crackimage.jpg"
-                if os.path.exists(image_path):
-                    try:
-                        img = Image.open(image_path)
-                        cols, rows = 5, 2
-                        cell_w, cell_h = img.width // cols, img.height // rows
-                        r = fault_stage // cols
-                        c = fault_stage % cols
-                        cropped = img.crop((c * cell_w, r * cell_h, (c + 1) * cell_w, (r + 1) * cell_h))
-
-                        st.subheader("📷 Crack Severity Visual Reference")
-                        st.image(cropped, caption=f"Francis Turbine Blade Surface - Stage {fault_stage}", use_column_width=True)
-                    except Exception as e:
-                        st.caption(f"Could not render image crop: {e}")
+                # Visual Blade Crack Slice Image
+                cropped_slice = get_cropped_crack_stage_image("crackimage.jpg", fault_stage)
+                if cropped_slice is not None:
+                    st.subheader("📷 Crack Severity Visual Reference")
+                    st.image(cropped_slice, caption=f"Francis Turbine Blade Surface - Predicted Stage {fault_stage}", use_column_width=True)
 
             with col_right:
                 st.subheader("🧠 LLM Expert Diagnostic Report")
@@ -171,8 +167,35 @@ with tab1:
                 st.markdown("### 🛠️ Maintenance Recommendation")
                 st.success(report.get("recommendation", "No specific recommendation provided."))
 
-# --- TAB 2: Batch CSV Ingestion ---
+# --- TAB 2: Signal Spectrum Analysis ---
 with tab2:
+    st.subheader("📈 Interactive Time-Domain & Welch PSD Spectral Analysis")
+    st.write("Synthesize or visualize frequency & time domain behavior for chosen sensor channels:")
+
+    col_s1, col_s2, col_s3 = st.columns(3)
+    with col_s1:
+        target_sensor = st.selectbox("Select Sensor Channel:", SENSOR_COLUMNS, index=1)
+    with col_s2:
+        sampling_freq = st.number_input("Sampling Frequency (Hz):", value=5120, step=100)
+    with col_s3:
+        signal_length = st.slider("Signal Length (Samples):", min_value=256, max_value=4096, value=1024, step=256)
+
+    np.random.seed(42)
+    t = np.linspace(0, signal_length / sampling_freq, signal_length, endpoint=False)
+    base_val = defaults[SENSOR_COLUMNS.index(target_sensor)] if 'defaults' in locals() else 0.05
+    synth_signal = base_val + 0.05 * np.sin(2 * np.pi * 50 * t) + 0.02 * np.sin(2 * np.pi * 120 * t) + np.random.normal(0, 0.005, size=len(t))
+
+    col_fig1, col_fig2 = st.columns(2)
+    with col_fig1:
+        fig_td = plot_time_domain_signal(synth_signal, sampling_rate=sampling_freq, sensor_name=target_sensor)
+        st.pyplot(fig_td)
+
+    with col_fig2:
+        fig_psd = plot_psd_spectrum(synth_signal, sampling_rate=sampling_freq, sensor_name=target_sensor)
+        st.pyplot(fig_psd)
+
+# --- TAB 3: Batch CSV Ingestion ---
+with tab3:
     st.subheader("📁 Upload Multivariate Sensor CSV")
     st.write("Upload a time-series CSV file containing columns: `PDT1`, `PGV2`, `PDT3`, `ATB1`, `ATB2`.")
 
@@ -212,8 +235,8 @@ with tab2:
         except Exception as e:
             st.error(f"❌ Error processing file: {e}")
 
-# --- TAB 3: Architecture & Benchmark ---
-with tab3:
+# --- TAB 4: Architecture & Benchmark ---
+with tab4:
     st.subheader("🔬 System Architecture & Model Benchmarks")
     st.markdown("""
     ### 🏗️ End-to-End Pipeline

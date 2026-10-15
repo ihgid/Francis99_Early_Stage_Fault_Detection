@@ -121,8 +121,22 @@ Experiments conducted across multiple machine learning architectures demonstrate
 │   ├── preprocess.py         # Scaling & Sequence Sliding Window Logic
 │   ├── model_pipeline.py     # CNN-LSTM Architecture Definition & Prediction Engine
 │   ├── signal_processing.py  # FFT, PSD & Welch Analysis Functions
+│   ├── visualization.py      # Time-Domain & Spectral Plotting Utilities
 │   ├── train.py              # End-to-End Retraining Pipeline Script
 │   └── llm_expert.py         # Groq LLaMA-3 Expert Advisory Agent
+├── notebooks/                # Model Exploration & Research Iterations
+│   ├── 01_Data_Visualization.ipynb
+│   ├── 02_UMAP_Analysis.ipynb
+│   ├── 03_SVM.ipynb
+│   ├── 04_XGBoost.ipynb
+│   ├── 05_ANN.ipynb
+│   ├── 06_RNN.ipynb
+│   ├── 07_CNN.ipynb
+│   ├── 08_LSTM.ipynb
+│   └── 09_Hyperparameter_Tuning.ipynb
+├── scripts/                  # Standalone Spectral & Signal Processing Scripts
+│   ├── fft_analysis.py
+│   └── time_domain_plot.py
 └── tests/                    # Unit Tests & Automated Pipeline Verification
     ├── __init__.py
     └── test_pipeline.py      # Preprocessing & Model Interface Tests
