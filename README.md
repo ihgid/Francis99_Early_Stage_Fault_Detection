@@ -209,9 +209,8 @@ python -m unittest discover -s tests
 
 ## 🤝 Citation & Acknowledgments
 
-If you find this research work or implementation useful, please cite:
-- **Paper Title**: *Early-Stage Fault Detection in Francis Turbines Using AI-ML*
-- **Paper Link**: [Francis Turbine AI-ML Fault Detection PDF](https://www.pravakarbogati.com.np/assets/papers/EARLY-STAGE%20FAULT%20DETECTION%20IN%20FRANCIS%20TURBINES%20USING%20AI-ML.pdf)
+If you find this research work or implementation useful, please cite:*
+- **Paper Link**: [Early-Stage Fault Detection in Francis Turbines Using AI-ML](https://www.pravakarbogati.com.np/assets/papers/EARLY-STAGE%20FAULT%20DETECTION%20IN%20FRANCIS%20TURBINES%20USING%20AI-ML.pdf)
 - **Dataset Source**: Francis-99 Benchmark Data, Norwegian University of Science and Technology (NTNU).
 
 ---
