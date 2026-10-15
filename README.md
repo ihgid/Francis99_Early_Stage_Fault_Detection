@@ -24,7 +24,7 @@ This repository implements a **fact-grounded, end-to-end Machine Learning pipeli
 
 ```mermaid
 graph TD;
-    subgraph 📡 Data Acquisition
+    subgraph S1 ["Data Acquisition"]
         A1[PDT1: Pressure Downstream 1]
         A2[PGV2: Guide Vane Vibration 2]
         A3[PDT3: Pressure Downstream 3]
@@ -32,25 +32,29 @@ graph TD;
         A5[ATB2: Axial Bearing Vibration 2]
     end
 
-    subgraph ⚙️ Preprocessing & Signal Pipeline
+    subgraph S2 ["Preprocessing & Signal Pipeline"]
         B1[RobustScaler Normalization]
         B2[30-Step Temporal Sliding Window Sequence]
         B3[Fast Fourier Transform & PSD Analysis]
     end
 
-    subgraph 🧠 Hybrid Deep Learning Engine
+    subgraph S3 ["Hybrid Deep Learning Engine"]
         C1[1D Convolutional Neural Network - Local Spatial Features]
         C2[LSTM Network - Temporal Dynamics Capture]
         C3[Dense Classification Layer - Softmax Output]
     end
 
-    subgraph 🖥️ Decision Support & Web Dashboard
+    subgraph S4 ["Decision Support & Web Dashboard"]
         D1[Predicted Fault Stage 0-9 & Confidence Score]
         D2[Cropped Blade Crack Image Slice]
         D3[Groq LLaMA-3 AI Expert Maintenance Recommendation]
     end
 
-    A1 & A2 & A3 & A4 & A5 --> B1
+    A1 --> B1
+    A2 --> B1
+    A3 --> B1
+    A4 --> B1
+    A5 --> B1
     B1 --> B2
     B1 --> B3
     B2 --> C1
